@@ -17,22 +17,27 @@ export default async function Home() {
         accessToken: token || '',
     })
 
-    const f = await spotifyWebApi.getMyTopArtists({
-        limit: 100,
+    const a = await spotifyWebApi.getMyTopArtists({
+        limit: 50,
         time_range: 'long_term',
+        offset: 0,
     })
+
+    const f = [...a.body.items]
     console.log(f)
     return (
         <main className={inter.className}>
-            <h1>
-                ghgh - {f.body.items.length} - {f.body.limit}
-            </h1>
-
-            {f.body.items.map((artist) => (
-                <div key={artist.id}>
-                    <p>{artist.name}</p>
-                </div>
-            ))}
+            <h1>ghgh - {f.length}</h1>
+            <div className='bg-orange-900 grid grid-cols-6 gap-3'>
+                {f.map((artist, index) => (
+                    <div key={artist.id} className='bg-orange-800'>
+                        <p>
+                            {index + 1} - {artist.name}
+                        </p>
+                        {/* <p>{artist.popularity}</p> */}
+                    </div>
+                ))}
+            </div>
 
             <pre className='bg-gray-800 p-5'>{JSON.stringify(f, null, 2)}</pre>
 
