@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     if ('token' in res) {
         return new Response('hej då', {
             headers: {
-                'Set-Cookie': `spotify_token=${res.token};Secure; HttpOnly; SameSite=None; Path=/; Max-Age=99999999;`,
+                'Set-Cookie': `spotify_token=${res.token};Secure; HttpOnly; SameSite=None; Path=/; Max-Age=3600;`,
                 // 'Set-Cookie': `spotify_token=${res.token};Max-Age=36000`,
             },
         })

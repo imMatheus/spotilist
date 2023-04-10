@@ -1,10 +1,8 @@
 import { Inter } from 'next/font/google'
 
-import { Showcase } from './Showcase'
 import { cookies } from 'next/headers'
-import SpotifyWebApi from 'spotify-web-api-node'
-import { SlideSelector } from './SlideSelector'
 import Image from 'next/image'
+import SpotifyWebApi from 'spotify-web-api-node'
 import { z } from 'zod'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -24,6 +22,8 @@ export default async function Home({
         accessToken: token || '',
     })
 
+    console.log(spotifyWebApi.getMyTopTracks)
+
     const validTimeRanges = z.enum(['short_term', 'medium_term', 'long_term'])
 
     console.log(searchParams)
@@ -35,28 +35,30 @@ export default async function Home({
               | 'medium_term'
               | 'long_term')
         : 'long_term'
-    const artists = (
-        await spotifyWebApi.getMyTopArtists({
-            limit: 52,
+
+    const songs = (
+        await spotifyWebApi.getMyTopTracks({
+            limit: 100,
             time_range: timeRange,
-            offset: 0,
         })
     ).body.items
 
     return (
         <>
-            {artists.map((artist, index) => (
-                <div key={artist.id}>
+            {' '}
+            {songs.map((song, index) => (
+                <div key={song.id} className=''>
                     <div className='relative aspect-square w-full'>
                         <Image
-                            src={artist.images[0].url}
-                            alt={artist.name + ' image'}
+                            src={song.album.images[0]?.url}
+                            alt={song.name + ' image'}
                             fill={true}
                             style={{ objectFit: 'cover' }}
                         />
                     </div>
-                    <p className='mt-3'>
-                        {index + 1} - {artist.name}
+                    <p className='mt-3 text-sm'>{song.name}</p>
+                    <p className='mt-1 text-sm text-gray-200'>
+                        {song.artists.map((artist) => artist.name).join(', ')}
                     </p>
                 </div>
             ))}
