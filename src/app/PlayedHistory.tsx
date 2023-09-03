@@ -20,6 +20,27 @@ export const PlayedHistory = async ({}) => {
 
   console.log(recentlyPlayedTracks[0].played_at);
 
+  function getTimeSince(date: Date) {
+    const now = new Date();
+    const elapsedTimeInSeconds = Math.floor(
+      (now.getTime() - date.getTime()) / 1000
+    );
+
+    if (elapsedTimeInSeconds < 60) {
+      return "a few seconds ago";
+    } else if (elapsedTimeInSeconds < 3600) {
+      const minutes = Math.floor(elapsedTimeInSeconds / 60);
+      return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+    } else if (elapsedTimeInSeconds < 86400) {
+      const hours = Math.floor(elapsedTimeInSeconds / 3600);
+      return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+    } else {
+      const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+      const days = Math.floor(elapsedTimeInSeconds / 86400);
+      return rtf.format(-days, "day");
+    }
+  }
+
   return (
     <div className="my-4">
       <h3 className="">Currently playing</h3>
@@ -73,11 +94,11 @@ export const PlayedHistory = async ({}) => {
                         {track.name}
                       </h4>
                       <p className="text-sm text-gray-400">
-                        {track.artists.map((artist) => artist.name).join(", ")}
+                        {track.artists.map((artist) => artist.name).join(" • ")}
                       </p>
                     </div>
                   </div>
-                  <div>{new Date(played_at).getTime()}</div>
+                  <div>{getTimeSince(new Date(played_at))}</div>
                 </div>
                 <hr className="my-2 border-white/5" />
               </li>
