@@ -4,6 +4,8 @@ import Image from "next/image";
 import { z } from "zod";
 import { getAccessToken } from "@/utils/getAccessToken";
 import axios from "axios";
+import Link from "next/link";
+import querystring from "querystring";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -55,9 +57,86 @@ export default async function Home({
 
   const artists: string[] = [];
 
+  const client_id = "98da74fcc2e84e5c9745f463fca947ae";
+  const client_secret = "638ce3916f81431d8db3c9de7ff489b6";
+
+  const scopes = [
+    "playlist-read-collaborative",
+    "playlist-read-private",
+    "user-library-read",
+    "user-top-read",
+    "user-read-playback-position",
+    "user-read-currently-playing",
+    "user-read-recently-played",
+  ];
+
+  function generateRandomString(length: number): string {
+    const charset =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let randomCharacters = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      randomCharacters += charset[randomIndex];
+    }
+
+    return randomCharacters;
+  }
+  const state = generateRandomString(16);
+  const scope = "user-read-private user-read-email";
+  const redirect_uri = "http://localhost:3000/";
+  const code =
+    "AQDF8ak7X90DeJh5PPo_JSPfJn5JmK4i0_lyvpUxmuzPa1eV7xXiw3jZOS4XbyH3XBVdNXFB6h1VHV3EbydV4Wa-9hwFRrCQjl4KZO4emiSTWOZ0q8Eivod7NXtrrFBhVrafT7QWWdMSZoTFka5GAC0KGMbasLeV7IOLJRAkrfoIIHiot128djZiMB5jr7YPI3pGBd9oLjMXayUO_6c";
+
+  async function test() {
+    try {
+      console.log("999999999999");
+
+      const { status, data, statusText } = await axios.post(
+        "https://accounts.spotify.com/api/token",
+        {
+          code: code,
+          redirect_uri: redirect_uri,
+          grant_type: "authorization_code",
+        },
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              new Buffer(client_id + ":" + client_secret).toString("base64"),
+            "content-type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      console.log({ status, data, statusText });
+    } catch (error: any) {
+      console.log("maaatheuusss");
+      console.log(error);
+      console.log("maaatheuusss");
+    }
+  }
+
+  //   test();
+
   return (
     <>
       wag1
+      <Link
+        href={
+          "https://accounts.spotify.com/authorize?" +
+          querystring.stringify({
+            response_type: "code",
+            client_id: client_id,
+            scope: scope,
+            redirect_uri: redirect_uri,
+            state: state,
+            // show_dialog: true,
+          })
+        }
+      >
+        <button className="bg-red-500 p-3">login</button>
+      </Link>
       {artists.map((artist: any, index: any) => (
         <div key={artist.id}>
           <div className="relative aspect-square w-full">
