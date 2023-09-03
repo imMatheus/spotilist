@@ -18,9 +18,7 @@ export default function RootLayout({
         <div className="px-4 py-5">
           <SlideSelector />
           <TimeSlider />
-          <div className="grid grid-cols-3 gap-5 md:grid-cols-4 xl:grid-cols-5">
-            {children}
-          </div>
+          {children}
         </div>
       </body>
     </html>

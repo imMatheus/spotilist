@@ -1,42 +1,18 @@
 import axios from "axios";
 import querystring from "querystring";
 
-const client_id = "98da74fcc2e84e5c9745f463fca947ae";
-const client_secret = "638ce3916f81431d8db3c9de7ff489b6";
+const client_id = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
-const scopes = [
-  "playlist-read-collaborative",
-  "playlist-read-private",
-  "user-library-read",
-  "user-top-read",
-  "user-read-playback-position",
-  "user-read-currently-playing",
-  "user-read-recently-played",
-];
+const access_token = process.env.ACCESS_TOKEN;
+const refresh_token = process.env.REFRSH_TOKEN;
 
-function generateRandomString(length: number): string {
-  const charset =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let randomCharacters = "";
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
-    randomCharacters += charset[randomIndex];
-  }
-
-  return randomCharacters;
-}
-
-const access_token =
-  "BQCOctbyx-NUd0AlCnpzclJMPrk8jvAwUz3I8xEAkpppADc33WmmX2Q26nvLqiJzrlAAoJbUEzIri-FwT7X944Uc8LGLXlhnveDzGOrDuU48AoT0_tLXNWTnsCdYb6MFDG8G4kD_6GuPn9b7ZkJtu2ejbxkTQlRRkT0LIO_HkcdmoUCb8rmjdJiV_M7ov59yKWgdDRrXURoqRKQr";
-const refresh_token =
-  "AQA-KLenj6qWDEUujrDK2rX02ce_Lg5_XJNj4PKGYB5eobrbWgn0B70LamdIq_iS1qOgx8xyhKUh1FbQVo5RKMnGsEaVcpFhHmr2PKiymC08p15uFm4zk2wBHrb0gncGFF0";
+let f = 0;
 
 export async function getAccessToken() {
-  const state = generateRandomString(16);
-  const scope = "user-read-private user-read-email";
-
   try {
+    console.log(++f);
+
     const { data } = await axios.post(
       "https://accounts.spotify.com/api/token",
       {
@@ -63,5 +39,38 @@ export async function getAccessToken() {
     console.log(error);
 
     return undefined;
+  }
+}
+
+async function getAccessTokenFromSpotify() {
+  const redirect_uri = "http://localhost:3000/";
+  const code =
+    "AQDF8ak7X90DeJh5PPo_JSPfJn5JmK4i0_lyvpUxmuzPa1eV7xXiw3jZOS4XbyH3XBVdNXFB6h1VHV3EbydV4Wa-9hwFRrCQjl4KZO4emiSTWOZ0q8Eivod7NXtrrFBhVrafT7QWWdMSZoTFka5GAC0KGMbasLeV7IOLJRAkrfoIIHiot128djZiMB5jr7YPI3pGBd9oLjMXayUO_6c";
+
+  try {
+    console.log("999999999999");
+
+    const { status, data, statusText } = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      {
+        code: code,
+        redirect_uri: redirect_uri,
+        grant_type: "authorization_code",
+      },
+      {
+        headers: {
+          Authorization:
+            "Basic " +
+            new Buffer(client_id + ":" + client_secret).toString("base64"),
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    console.log({ status, data, statusText });
+  } catch (error: any) {
+    console.log("maaatheuusss");
+    console.log(error);
+    console.log("maaatheuusss");
   }
 }
