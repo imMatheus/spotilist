@@ -45,7 +45,7 @@ export const PlayedHistory = async ({}) => {
     <div className="my-4">
       <h3 className="">Currently playing</h3>
       {currentlyPlayingTrack.item && "album" in currentlyPlayingTrack.item && (
-        <div className="flex w-max gap-4 rounded-md bg-black p-5">
+        <div className="flex max-w-max gap-4 rounded-md bg-black p-5">
           <div className="relative aspect-square w-24">
             <Image
               src={currentlyPlayingTrack.item.album.images[0].url}
@@ -66,8 +66,8 @@ export const PlayedHistory = async ({}) => {
           </div>
         </div>
       )}
-      <div className="my-4">
-        <div className="mb-2">
+      <div className="mb-4">
+        <div className="sticky top-0 mb-2 bg-bg py-4">
           <h2 className="text-2xl font-bold leading-9 lg:text-3xl lg:leading-10">
             Recent streams
           </h2>
@@ -79,8 +79,8 @@ export const PlayedHistory = async ({}) => {
           {recentlyPlayedTracks.map(({ track, played_at }) => {
             return (
               <li key={track.id + played_at}>
-                <div className="flex justify-between">
-                  <div className="flex gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-3">
                     <div className="overflow-hidden">
                       <Image
                         src={track.album.images[0].url}
@@ -98,7 +98,13 @@ export const PlayedHistory = async ({}) => {
                       </p>
                     </div>
                   </div>
-                  <div>{getTimeSince(new Date(played_at))}</div>
+                  <time
+                    className="text-right text-sm text-gray-400"
+                    dateTime={played_at}
+                    title={new Date(played_at).toUTCString()}
+                  >
+                    {getTimeSince(new Date(played_at))}
+                  </time>
                 </div>
                 <hr className="my-2 border-white/5" />
               </li>
