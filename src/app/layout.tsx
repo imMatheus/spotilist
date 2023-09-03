@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import "./globals.css";
+import { PlayedHistory } from "./PlayedHistory";
 import { SlideSelector } from "./SlideSelector";
 import { TimeSlider } from "./TimeSlider";
 
@@ -7,7 +9,7 @@ export const metadata = {
   description: "See your stats for Spotify",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -16,6 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="mx-auto max-w-7xl">
         <div className="px-4 py-5">
+          <Suspense fallback={<p className="bg-red-500">loading...</p>}>
+            {/* @ts-expect-error Server Component */}
+            <PlayedHistory />
+          </Suspense>
           <SlideSelector />
           <TimeSlider />
           {children}

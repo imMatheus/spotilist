@@ -52,6 +52,7 @@ export default async function Home({
       >
         <button className="bg-red-500 p-3">login</button>
       </Link> */}
+
       <GridLayout>
         {artists.map((artist, index) => (
           <div key={artist.id}>
