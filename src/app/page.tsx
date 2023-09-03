@@ -1,65 +1,75 @@
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
+import SpotifyWebApi from "spotify-web-api-node";
+import Image from "next/image";
+import { z } from "zod";
+import { getAccessToken } from "@/utils/getAccessToken";
+import axios from "axios";
+import Link from "next/link";
+import querystring from "querystring";
+import { GridLayout } from "./GridLayout";
 
-import { Showcase } from './Showcase'
-import { cookies } from 'next/headers'
-import SpotifyWebApi from 'spotify-web-api-node'
-import { SlideSelector } from './SlideSelector'
-import Image from 'next/image'
-import { z } from 'zod'
-
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home({
-    searchParams,
+  searchParams,
 }: {
-    searchParams?: { time_range?: string }
+  searchParams?: { time_range?: string };
 }) {
-    const cookiesStore = cookies()
-    const token = cookiesStore.get('spotify_token')?.value
+  const token = await getAccessToken();
 
-    const spotifyWebApi = new SpotifyWebApi({
-        clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
-        clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
-        redirectUri: process.env.NEXT_PUBLIC_REDIRECT_URL,
-        accessToken: token || '',
+  const validTimeRanges = z.enum(["short_term", "medium_term", "long_term"]);
+
+  const timeRange = validTimeRanges.safeParse(searchParams?.time_range).success
+    ? (searchParams?.time_range as "short_term" | "medium_term" | "long_term")
+    : "long_term";
+
+  const spotifyApi = new SpotifyWebApi({
+    accessToken: token,
+  });
+
+  const artists = (
+    await spotifyApi.getMyTopArtists({
+      limit: 50,
+      offset: 0,
+      time_range: timeRange,
     })
+  ).body.items;
+  return (
+    <>
+      {/* 
+      <Link
+        href={
+          "https://accounts.spotify.com/authorize?" +
+          querystring.stringify({
+            response_type: "code",
+            client_id: client_id,
+            scope: scope,
+            redirect_uri: redirect_uri,
+            state: state,
+            // show_dialog: true,
+          })
+        }
+      >
+        <button className="bg-red-500 p-3">login</button>
+      </Link> */}
 
-    const validTimeRanges = z.enum(['short_term', 'medium_term', 'long_term'])
-
-    console.log(searchParams)
-
-    const timeRange = validTimeRanges.safeParse(searchParams?.time_range)
-        .success
-        ? (searchParams?.time_range as
-              | 'short_term'
-              | 'medium_term'
-              | 'long_term')
-        : 'long_term'
-    const artists = (
-        await spotifyWebApi.getMyTopArtists({
-            limit: 52,
-            time_range: timeRange,
-            offset: 0,
-        })
-    ).body.items
-
-    return (
-        <>
-            {artists.map((artist, index) => (
-                <div key={artist.id}>
-                    <div className='relative aspect-square w-full'>
-                        <Image
-                            src={artist.images[0].url}
-                            alt={artist.name + ' image'}
-                            fill={true}
-                            style={{ objectFit: 'cover' }}
-                        />
-                    </div>
-                    <p className='mt-3'>
-                        {index + 1} - {artist.name}
-                    </p>
-                </div>
-            ))}
-        </>
-    )
+      <GridLayout>
+        {artists.map((artist, index) => (
+          <div key={artist.id}>
+            <div className="relative aspect-square w-full">
+              <Image
+                src={artist.images[0].url}
+                alt={artist.name + " image"}
+                fill={true}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <p className="mt-3">
+              {index + 1} - {artist.name}
+            </p>
+          </div>
+        ))}
+      </GridLayout>
+    </>
+  );
 }
