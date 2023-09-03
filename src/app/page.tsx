@@ -1,65 +1,78 @@
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
+import SpotifyWebApi from "spotify-web-api-node";
+import Image from "next/image";
+import { z } from "zod";
+import { getAccessToken } from "@/utils/getAccessToken";
+import axios from "axios";
 
-import { Showcase } from './Showcase'
-import { cookies } from 'next/headers'
-import SpotifyWebApi from 'spotify-web-api-node'
-import { SlideSelector } from './SlideSelector'
-import Image from 'next/image'
-import { z } from 'zod'
-
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home({
-    searchParams,
+  searchParams,
 }: {
-    searchParams?: { time_range?: string }
+  searchParams?: { time_range?: string };
 }) {
-    const cookiesStore = cookies()
-    const token = cookiesStore.get('spotify_token')?.value
+  const token = await getAccessToken();
+  //   const token =
+  //     "BQD88OqEpOPGDigZNOgEbom9kgQ6HR8R6Uzc7ERwEDY0LFIkyptraOUDhgmHJiTNxauOLCs";
+  //   const token =
+  //     "BQDH97yzctlB8-qzlpj0qOkdKlKGvZQ2C75OzhEh7FIRKQ1o6DmWdi9mZwVLrJkdO7XiJVGwdcoTgudPgUzA6aHRixb4TH71Ok5trkdyB9WRcX_f_1Vjw_L6AeeLfFzR6n3_KbdlWCP0fpEdwmtzvVobo8YLnwY4baD4s-RwF8Q3Ivk3z5kTb5utyYnvdLmQUxEcznFjzzRbX3V_6Dp2hK9l4FKac40Bat_x6mHGw_Wf8zIat-NripvkjVEMJksW0MRcmeM5ny_urJq2D58";
 
-    const spotifyWebApi = new SpotifyWebApi({
-        clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
-        clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
-        redirectUri: process.env.NEXT_PUBLIC_REDIRECT_URL,
-        accessToken: token || '',
-    })
+  console.log(token);
+  console.log("jjjajajaajajaj");
 
-    const validTimeRanges = z.enum(['short_term', 'medium_term', 'long_term'])
+  const validTimeRanges = z.enum(["short_term", "medium_term", "long_term"]);
 
-    console.log(searchParams)
+  const timeRange = validTimeRanges.safeParse(searchParams?.time_range).success
+    ? (searchParams?.time_range as "short_term" | "medium_term" | "long_term")
+    : "long_term";
 
-    const timeRange = validTimeRanges.safeParse(searchParams?.time_range)
-        .success
-        ? (searchParams?.time_range as
-              | 'short_term'
-              | 'medium_term'
-              | 'long_term')
-        : 'long_term'
-    const artists = (
-        await spotifyWebApi.getMyTopArtists({
-            limit: 52,
-            time_range: timeRange,
-            offset: 0,
-        })
-    ).body.items
+  try {
+    const hh = await fetch(
+      "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=5",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+        body: JSON.stringify(undefined),
+      }
+    );
+    // const body = await hh.json();
 
-    return (
-        <>
-            {artists.map((artist, index) => (
-                <div key={artist.id}>
-                    <div className='relative aspect-square w-full'>
-                        <Image
-                            src={artist.images[0].url}
-                            alt={artist.name + ' image'}
-                            fill={true}
-                            style={{ objectFit: 'cover' }}
-                        />
-                    </div>
-                    <p className='mt-3'>
-                        {index + 1} - {artist.name}
-                    </p>
-                </div>
-            ))}
-        </>
-    )
+    console.log("asasasas");
+    console.log(hh.status);
+    console.log(hh.statusText);
+    console.log(hh.ok);
+    // console.log(body);
+
+    // console.log(hh);
+  } catch (error) {
+    console.log("eeeeeee");
+    console.log(error);
+  }
+  console.log(555555);
+
+  const artists: string[] = [];
+
+  return (
+    <>
+      wag1
+      {artists.map((artist: any, index: any) => (
+        <div key={artist.id}>
+          <div className="relative aspect-square w-full">
+            <Image
+              src={artist.images[0].url}
+              alt={artist.name + " image"}
+              fill={true}
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+          <p className="mt-3">
+            {index + 1} - {artist.name}
+          </p>
+        </div>
+      ))}
+    </>
+  );
 }
