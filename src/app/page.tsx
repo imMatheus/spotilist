@@ -3,6 +3,7 @@ import Image from "next/image";
 import { z } from "zod";
 import { getAccessToken } from "@/utils/getAccessToken";
 import { GridLayout } from "./GridLayout";
+import { SectionHeader } from "@/components/SectionHeader";
 
 export default async function Home({
   searchParams,
@@ -55,6 +56,10 @@ export default async function Home({
         <button className="bg-red-500 p-3">login</button>
       </Link> */}
 
+      <SectionHeader
+        text="Top artists"
+        secondaryText="Yeah, I like Drake, I know :/"
+      />
       <GridLayout>
         {artists.map((artist, index) => (
           <div key={artist.id}>
@@ -74,6 +79,11 @@ export default async function Home({
           </div>
         ))}
       </GridLayout>
+
+      <SectionHeader
+        text="Top songs"
+        secondaryText="IDK how some of these songs ended up here, must have been a phase 😩"
+      />
 
       <GridLayout>
         {songs.map((song, index) => (

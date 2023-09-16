@@ -87,7 +87,7 @@ export const PlayedHistoryList: React.FC<PlayedHistoryListProps> = ({
             setShowMore((c) => !c);
           }}
         >
-          {showMore ? "Show less" : "Show more"}
+          {showMore ? "Show less songs" : "Show more songs"}
         </Button>
       </div>
     </div>

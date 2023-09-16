@@ -32,15 +32,15 @@ export const TimeSlider: React.FC = ({}) => {
     ? searchTimeRange
     : "long_term"; // default
   return (
-    <div className="mb-3 mt-4 flex">
+    <div className="sticky bottom-0 z-10 mt-3 flex w-full bg-bg">
       <LayoutGroup>
         {data.map((point) => (
           <Link
             key={point.text}
             href={`${pathname}?time_range=${point.time_range}`}
-            className={classNames("relative px-3 py-1")}
+            className={classNames("relative flex-1 px-3 py-2 text-center")}
           >
-            {point.text}
+            <p className="text-sm font-semibold">{point.text}</p>
             {time_range === point.time_range && (
               <motion.div
                 layoutId="time-range"
@@ -49,7 +49,7 @@ export const TimeSlider: React.FC = ({}) => {
                   stiffness: 350,
                   damping: 30,
                 }}
-                className="absolute bottom-0 left-0 right-0 h-[1px] w-full bg-primary"
+                className="absolute bottom-0 left-0 right-0 h-[2px] w-full bg-primary"
               ></motion.div>
             )}
           </Link>

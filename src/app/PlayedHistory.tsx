@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import SpotifyWebApi from "spotify-web-api-node";
 import { PlayedHistoryList } from "./PlayedHistoryList";
+import { SectionHeader } from "@/components/SectionHeader";
 
 export const PlayedHistory = async ({}) => {
   const token = await getAccessToken();
@@ -20,17 +21,15 @@ export const PlayedHistory = async ({}) => {
     .body;
 
   return (
-    <div className="my-4">
+    <div className="">
       {currentlyPlayingTrack.item && "album" in currentlyPlayingTrack.item && (
         <div className="mb-4">
-          <div className="z-10 mb-2 py-4">
-            <h2 className="text-2xl font-bold leading-9 lg:text-3xl lg:leading-10">
-              Currently playing
-            </h2>
-            <p className="text-sm text-gray-400 lg:text-base">
-              This is a certified hood banger! {"Don't @ me 😤"}
-            </p>
-          </div>
+          <SectionHeader
+            sticky={false}
+            text=" Currently playing"
+            secondaryText="This is a certified hood banger! Don't @ me 😤"
+          />
+
           <div className="flex max-w-max gap-3 rounded-md md:gap-4">
             <div className="relative aspect-square h-14 w-14 shrink-0 md:h-20 md:w-20 lg:h-24 lg:w-24">
               <Image
