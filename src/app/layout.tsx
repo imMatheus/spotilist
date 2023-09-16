@@ -1,9 +1,5 @@
-import { Suspense } from "react";
 import "./globals.css";
-import { PlayedHistory } from "../components/PlayedHistory";
-import { SlideSelector } from "../components/SlideSelector";
 import { TimeSlider } from "../components/TimeSlider";
-import Image from "next/image";
 import { IntroSection } from "./(sections)/IntroSection";
 import { SelfieSection } from "./(sections)/SelfieSection";
 import { RecentlyPlayedSection } from "./(sections)/RecentlyPlayedSection";

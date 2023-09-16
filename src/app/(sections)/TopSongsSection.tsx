@@ -58,7 +58,7 @@ const TopSongsList = async ({ timeRange }: TopSongsSectionProps) => {
   return (
     <GridLayout>
       {songs.map((song, index) => (
-        <div key={song.id} className="">
+        <div key={song.id}>
           <div className="relative mb-2 aspect-square w-full">
             <Image
               loading="lazy"
@@ -68,7 +68,9 @@ const TopSongsList = async ({ timeRange }: TopSongsSectionProps) => {
               style={{ objectFit: "cover" }}
             />
           </div>
-          <p className="mb-1 text-xs font-medium md:text-sm">{song.name}</p>
+          <p className="mb-1 text-xs font-medium md:text-sm">
+            <span>{index + 1}.</span> {song.name}
+          </p>
           <p className="text-xs text-gray-400 md:text-sm">
             {song.artists.map((artist) => artist.name).join(", ")}
           </p>
