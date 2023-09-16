@@ -2,7 +2,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import Image from "next/image";
 import { z } from "zod";
 import { getAccessToken } from "@/utils/getAccessToken";
-import { GridLayout } from "./GridLayout";
+import { GridLayout } from "../components/GridLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 
 export default async function Home({

@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import "./globals.css";
-import { PlayedHistory } from "./PlayedHistory";
-import { SlideSelector } from "./SlideSelector";
-import { TimeSlider } from "./TimeSlider";
+import { PlayedHistory } from "../components/PlayedHistory";
+import { SlideSelector } from "../components/SlideSelector";
+import { TimeSlider } from "../components/TimeSlider";
 import Image from "next/image";
 
 export const metadata = {

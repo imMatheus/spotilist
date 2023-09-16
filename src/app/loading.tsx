@@ -1,5 +1,5 @@
 import React from "react";
-import { GridLayout } from "./GridLayout";
+import { GridLayout } from "../components/GridLayout";
 
 export default function loading() {
   return (
