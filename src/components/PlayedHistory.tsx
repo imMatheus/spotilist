@@ -26,7 +26,7 @@ export const PlayedHistory = async ({}) => {
         <div className="mb-4">
           <SectionHeader
             sticky={false}
-            text=" Currently playing"
+            text="Currently playing"
             secondaryText="This is a certified hood banger! Don't @ me 😤"
           />
 

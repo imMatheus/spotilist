@@ -1,10 +1,8 @@
 import axios from "axios";
-import querystring from "querystring";
 
-const client_id = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
-const access_token = process.env.ACCESS_TOKEN;
 const refresh_token = process.env.REFRSH_TOKEN;
 
 let f = 0;
