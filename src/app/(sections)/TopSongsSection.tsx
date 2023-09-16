@@ -15,10 +15,30 @@ export const TopSongsSection: React.FC<TopSongsSectionProps> = ({
   timeRange,
 }) => {
   return (
-    <Suspense fallback={<p className="bg-blue-500">3333...</p>}>
-      {/* @ts-expect-error Server Component */}
-      <TopSongsList timeRange={timeRange} />
-    </Suspense>
+    <>
+      <SectionHeader
+        text="Top songs"
+        secondaryText="IDK how some of these songs ended up here, must have been a phase 😩"
+      />
+      <Suspense
+        fallback={
+          <GridLayout>
+            {Array(50)
+              .fill(null)
+              .map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="aspect-square bg-neutral-700"></div>
+                  <div className="mt-3 h-3 w-3/5 bg-neutral-700"></div>
+                  <div className="mt-1 h-3 w-2/5 bg-neutral-700"></div>
+                </div>
+              ))}
+          </GridLayout>
+        }
+      >
+        {/* @ts-expect-error Server Component */}
+        <TopSongsList timeRange={timeRange} />
+      </Suspense>
+    </>
   );
 };
 
@@ -36,29 +56,24 @@ const TopSongsList = async ({ timeRange }: TopSongsSectionProps) => {
   ).body.items;
 
   return (
-    <>
-      <SectionHeader
-        text="Top songs"
-        secondaryText="IDK how some of these songs ended up here, must have been a phase 😩"
-      />
-      <GridLayout>
-        {songs.map((song, index) => (
-          <div key={song.id} className="">
-            <div className="relative mb-2 aspect-square w-full">
-              <Image
-                src={song.album.images[0]?.url}
-                alt={song.name + " image"}
-                fill={true}
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            <p className="mb-1 text-xs font-medium md:text-sm">{song.name}</p>
-            <p className="text-xs text-gray-400 md:text-sm">
-              {song.artists.map((artist) => artist.name).join(", ")}
-            </p>
+    <GridLayout>
+      {songs.map((song, index) => (
+        <div key={song.id} className="">
+          <div className="relative mb-2 aspect-square w-full">
+            <Image
+              loading="lazy"
+              src={song.album.images[0]?.url}
+              alt={song.name + " image"}
+              fill={true}
+              style={{ objectFit: "cover" }}
+            />
           </div>
-        ))}
-      </GridLayout>
-    </>
+          <p className="mb-1 text-xs font-medium md:text-sm">{song.name}</p>
+          <p className="text-xs text-gray-400 md:text-sm">
+            {song.artists.map((artist) => artist.name).join(", ")}
+          </p>
+        </div>
+      ))}
+    </GridLayout>
   );
 };
