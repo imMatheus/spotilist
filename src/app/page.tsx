@@ -30,6 +30,10 @@ export default async function Home({
     })
   ).body.items;
 
+  const stats = (await spotifyApi.getMe()).body;
+
+  console.log(stats);
+
   const songs = (
     await spotifyApi.getMyTopTracks({
       limit: 100,
@@ -58,8 +62,9 @@ export default async function Home({
 
       <SectionHeader
         text="Top artists"
-        secondaryText="Yeah, I like Drake, I know :/"
+        secondaryText="Yeah, I like Drake, I know"
       />
+
       <GridLayout>
         {artists.map((artist, index) => (
           <div key={artist.id}>
@@ -84,11 +89,10 @@ export default async function Home({
         text="Top songs"
         secondaryText="IDK how some of these songs ended up here, must have been a phase 😩"
       />
-
       <GridLayout>
         {songs.map((song, index) => (
           <div key={song.id} className="">
-            <div className="relative aspect-square w-full">
+            <div className="relative mb-2 aspect-square w-full">
               <Image
                 src={song.album.images[0]?.url}
                 alt={song.name + " image"}
@@ -96,8 +100,8 @@ export default async function Home({
                 style={{ objectFit: "cover" }}
               />
             </div>
-            <p className="mt-3 text-sm">{song.name}</p>
-            <p className="mt-1 text-sm text-gray-200">
+            <p className="mb-1 text-xs font-medium md:text-sm">{song.name}</p>
+            <p className="text-xs text-gray-400 md:text-sm">
               {song.artists.map((artist) => artist.name).join(", ")}
             </p>
           </div>

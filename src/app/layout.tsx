@@ -18,16 +18,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="relative mx-auto max-w-7xl">
-        <div className="absolute h-52 w-full">
-          <Image
-            alt="wave background image"
-            fill
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            src="/bg-waves-2.svg"
-            sizes="100vw"
-          />
-        </div>
-        <div className="relative z-10 px-4 pt-5">
+        <div className="relative z-10 px-3 pt-5 md:px-4">
           <div className="relative mb-4">
             <h1 className="text-2xl font-bold tracking-widest">
               Matheus Music
@@ -36,6 +27,41 @@ export default async function RootLayout({
               I like music, <span className="font-serif italic">A LOT</span>,
               and this is an insight to what im listning to
             </p>
+          </div>
+
+          <div className="my-2">
+            <div className="">
+              <h3 className="text-gray-400">
+                Me whenever Drake drops{" "}
+                <span className="font-bold">{'"For all the dogs"'}</span>
+              </h3>
+            </div>
+            <div className="flex h-32 w-full max-w-xl gap-2">
+              <div className="relative h-full w-full">
+                <Image
+                  alt=""
+                  fill
+                  src="/me-1.JPG"
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+              <div className="relative h-full w-full">
+                <Image
+                  alt=""
+                  fill
+                  src="/me-2.JPG"
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+              <div className="relative hidden h-full w-full md:block">
+                <Image
+                  alt=""
+                  fill
+                  src="/me-3.JPG"
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+            </div>
           </div>
 
           <Suspense fallback={<p className="bg-red-500">loading...</p>}>

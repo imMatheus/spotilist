@@ -70,18 +70,12 @@ export const PlayedHistory = async ({}) => {
         </div>
       )}
       <div className="mb-4">
-        <div className="sticky top-0 z-10 mb-2 bg-bg py-4">
-          <h2 className="text-2xl font-bold leading-9 lg:text-3xl lg:leading-10">
-            Recent streams
-          </h2>
-          <p className="text-sm text-gray-400 lg:text-base">
-            My recently played tracks, don&apos;t judge me I might be going
-            though something
-          </p>
-        </div>
+        <SectionHeader
+          text="Recent streams"
+          secondaryText="My recently played tracks, don't judge me I might be going though something"
+        />
         <PlayedHistoryList recentlyPlayedTracks={recentlyPlayedTracks} />
       </div>
-      {/* <pre>{JSON.stringify(currentlyPlayingTrack.item, null, 2)}</pre> */}
     </div>
   );
 };

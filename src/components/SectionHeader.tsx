@@ -13,7 +13,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   secondaryText,
 }) => {
   return (
-    <div className={cn("z-10 pb-4", sticky && "sticky top-0 bg-bg")}>
+    <div className={cn("z-10 py-4", sticky && "sticky top-0 bg-bg")}>
       <h2 className="text-2xl font-bold leading-9 lg:text-3xl lg:leading-10">
         {text}
       </h2>
