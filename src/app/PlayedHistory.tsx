@@ -19,20 +19,16 @@ export const PlayedHistory = async ({}) => {
   const currentlyPlayingTrack = (await spotifyApi.getMyCurrentPlayingTrack())
     .body;
 
-  console.log(currentlyPlayingTrack);
-
-  console.log(recentlyPlayedTracks[0].track.album.images);
-
   return (
     <div className="my-4">
       {currentlyPlayingTrack.item && "album" in currentlyPlayingTrack.item && (
         <div className="mb-4">
-          <div className="sticky top-0 z-10 mb-2 bg-bg py-4">
+          <div className="z-10 mb-2 py-4">
             <h2 className="text-2xl font-bold leading-9 lg:text-3xl lg:leading-10">
               Currently playing
             </h2>
             <p className="text-sm text-gray-400 lg:text-base">
-              This is a certified hood banger!
+              This is a certified hood banger! {"Don't @ me 😤"}
             </p>
           </div>
           <div className="flex max-w-max gap-3 rounded-md md:gap-4">
@@ -46,7 +42,7 @@ export const PlayedHistory = async ({}) => {
               />
             </div>
             <div className="">
-              <h3 className="mb-1 text-lg font-semibold md:text-xl">
+              <h3 className="mb-1 text-base font-semibold sm:text-lg md:text-xl">
                 {currentlyPlayingTrack.item.name}
               </h3>
               <p className="text-sm text-gray-300 md:text-base">
@@ -54,6 +50,22 @@ export const PlayedHistory = async ({}) => {
                   .map((artist) => artist.name)
                   .join(", ")}
               </p>
+              {currentlyPlayingTrack.progress_ms !== null && (
+                <div className="mt-3 hidden md:block">
+                  <div className="h-1 w-44 overflow-hidden rounded-full bg-[#4d4c4c]">
+                    <div
+                      className="h-1 w-1/3 bg-primary"
+                      style={{
+                        width:
+                          (currentlyPlayingTrack.progress_ms /
+                            currentlyPlayingTrack.item.duration_ms) *
+                            100 +
+                          "%",
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

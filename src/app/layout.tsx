@@ -5,8 +5,8 @@ import { SlideSelector } from "./SlideSelector";
 import { TimeSlider } from "./TimeSlider";
 
 export const metadata = {
-  title: "Spotilist",
-  description: "See your stats for Spotify",
+  title: "Matheus Music",
+  description: "See what music Matheus been listening to",
 };
 
 export default async function RootLayout({

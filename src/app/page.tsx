@@ -1,14 +1,8 @@
-import { Inter } from "next/font/google";
 import SpotifyWebApi from "spotify-web-api-node";
 import Image from "next/image";
 import { z } from "zod";
 import { getAccessToken } from "@/utils/getAccessToken";
-import axios from "axios";
-import Link from "next/link";
-import querystring from "querystring";
 import { GridLayout } from "./GridLayout";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home({
   searchParams,
@@ -34,6 +28,14 @@ export default async function Home({
       time_range: timeRange,
     })
   ).body.items;
+
+  const songs = (
+    await spotifyApi.getMyTopTracks({
+      limit: 100,
+      time_range: timeRange,
+    })
+  ).body.items;
+
   return (
     <>
       {/* 
@@ -62,11 +64,31 @@ export default async function Home({
                 alt={artist.name + " image"}
                 fill={true}
                 sizes="100vw"
+                className="rounded-full md:rounded-none"
                 style={{ objectFit: "cover" }}
               />
             </div>
-            <p className="mt-3">
-              <span className="">{index + 1}.</span> {artist.name}
+            <p className="mt-3 text-center text-sm md:text-base">
+              <span className="text-gray-400">{index + 1}.</span> {artist.name}
+            </p>
+          </div>
+        ))}
+      </GridLayout>
+
+      <GridLayout>
+        {songs.map((song, index) => (
+          <div key={song.id} className="">
+            <div className="relative aspect-square w-full">
+              <Image
+                src={song.album.images[0]?.url}
+                alt={song.name + " image"}
+                fill={true}
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+            <p className="mt-3 text-sm">{song.name}</p>
+            <p className="mt-1 text-sm text-gray-200">
+              {song.artists.map((artist) => artist.name).join(", ")}
             </p>
           </div>
         ))}
