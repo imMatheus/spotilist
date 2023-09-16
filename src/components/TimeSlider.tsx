@@ -39,7 +39,7 @@ export const TimeSlider: React.FC = ({}) => {
             key={point.text}
             href={`${pathname}?time_range=${point.time_range}`}
             className={classNames(
-              "relative flex-1 cursor-pointer px-4 py-1.5 text-center transition-all",
+              "relative flex-1 cursor-pointer px-4 py-2 text-center transition-all",
               time_range === point.time_range
                 ? "text-black"
                 : "hover:opacity-90"
