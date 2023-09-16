@@ -4,6 +4,11 @@ import { z } from "zod";
 import { getAccessToken } from "@/utils/getAccessToken";
 import { GridLayout } from "../components/GridLayout";
 import { SectionHeader } from "@/components/SectionHeader";
+import { TopArtistsSection } from "./(sections)/TopArtistsSection";
+import { TopSongsSection } from "./(sections)/TopSongsSection";
+
+const validTimeRanges = ["short_term", "medium_term", "long_term"] as const;
+export type TimeRange = (typeof validTimeRanges)[number];
 
 export default async function Home({
   searchParams,
@@ -12,27 +17,15 @@ export default async function Home({
 }) {
   const token = await getAccessToken();
 
-  const validTimeRanges = z.enum(["short_term", "medium_term", "long_term"]);
+  const ValidTimeRanges = z.enum(validTimeRanges);
 
-  const timeRange = validTimeRanges.safeParse(searchParams?.time_range).success
-    ? (searchParams?.time_range as "short_term" | "medium_term" | "long_term")
+  const timeRange = ValidTimeRanges.safeParse(searchParams?.time_range).success
+    ? (searchParams?.time_range as TimeRange)
     : "long_term";
 
   const spotifyApi = new SpotifyWebApi({
     accessToken: token,
   });
-
-  const artists = (
-    await spotifyApi.getMyTopArtists({
-      limit: 50,
-      offset: 0,
-      time_range: timeRange,
-    })
-  ).body.items;
-
-  const stats = (await spotifyApi.getMe()).body;
-
-  console.log(stats);
 
   const songs = (
     await spotifyApi.getMyTopTracks({
@@ -60,53 +53,8 @@ export default async function Home({
         <button className="bg-red-500 p-3">login</button>
       </Link> */}
 
-      <SectionHeader
-        text="Top artists"
-        secondaryText="Yeah, I like Drake, I know"
-      />
-
-      <GridLayout>
-        {artists.map((artist, index) => (
-          <div key={artist.id}>
-            <div className="relative aspect-square w-full">
-              <Image
-                src={artist.images[0].url}
-                alt={artist.name + " image"}
-                fill={true}
-                sizes="100vw"
-                className="rounded-full md:rounded-none"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            <p className="mt-3 text-center text-sm md:text-base">
-              <span className="text-gray-400">{index + 1}.</span> {artist.name}
-            </p>
-          </div>
-        ))}
-      </GridLayout>
-
-      <SectionHeader
-        text="Top songs"
-        secondaryText="IDK how some of these songs ended up here, must have been a phase 😩"
-      />
-      <GridLayout>
-        {songs.map((song, index) => (
-          <div key={song.id} className="">
-            <div className="relative mb-2 aspect-square w-full">
-              <Image
-                src={song.album.images[0]?.url}
-                alt={song.name + " image"}
-                fill={true}
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            <p className="mb-1 text-xs font-medium md:text-sm">{song.name}</p>
-            <p className="text-xs text-gray-400 md:text-sm">
-              {song.artists.map((artist) => artist.name).join(", ")}
-            </p>
-          </div>
-        ))}
-      </GridLayout>
+      <TopArtistsSection timeRange={timeRange} />
+      <TopSongsSection timeRange={timeRange} />
     </>
   );
 }
