@@ -61,11 +61,12 @@ export default async function Home({
                 src={artist.images[0].url}
                 alt={artist.name + " image"}
                 fill={true}
+                sizes="100vw"
                 style={{ objectFit: "cover" }}
               />
             </div>
             <p className="mt-3">
-              {index + 1} - {artist.name}
+              <span className="">{index + 1}.</span> {artist.name}
             </p>
           </div>
         ))}
