@@ -19,12 +19,12 @@ export const RecentlyPlayedSection: React.FC = ({}) => {
                   key={index}
                   className="mb-1 flex animate-pulse items-center gap-2"
                 >
-                  <div className="h-12 w-12 rounded-full bg-neutral-700"></div>
-                  <div className="w-1/5">
-                    <div className="mb-1 h-3 w-1/2 bg-neutral-700"></div>
-                    <div className="h-3 w-1/4 bg-neutral-700"></div>
+                  <div className="h-12 w-12 bg-neutral-700"></div>
+                  <div>
+                    <div className="mb-1 h-3 w-20 bg-neutral-700 md:w-28"></div>
+                    <div className="h-3 w-16 bg-neutral-700 md:w-20"></div>
                   </div>
-                  <div className="ml-auto mt-1 h-3 w-1/12 bg-neutral-700"></div>
+                  <div className="ml-auto mt-1 h-3 w-7 bg-neutral-700 md:w-10"></div>
                 </li>
               ))}
           </ul>
