@@ -50,7 +50,7 @@ const TopSongsList = async ({ timeRange }: TopSongsSectionProps) => {
   });
   const songs = (
     await spotifyApi.getMyTopTracks({
-      limit: 100,
+      limit: 50,
       time_range: timeRange,
     })
   ).body.items;
