@@ -50,7 +50,7 @@ export const PlayedHistory = async ({}) => {
                   .join(", ")}
               </p>
               {currentlyPlayingTrack.progress_ms !== null && (
-                <div className="mt-3 hidden md:block">
+                <div className="mt-3">
                   <div className="h-1 w-44 overflow-hidden rounded-full bg-[#4d4c4c]">
                     <div
                       className="h-1 w-1/3 bg-primary"
