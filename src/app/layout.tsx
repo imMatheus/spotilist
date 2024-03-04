@@ -1,7 +1,6 @@
 import "./globals.css";
 import { TimeSlider } from "../components/TimeSlider";
 import { IntroSection } from "./(sections)/IntroSection";
-import { SelfieSection } from "./(sections)/SelfieSection";
 import { RecentlyPlayedSection } from "./(sections)/RecentlyPlayedSection";
 
 export const metadata = {
@@ -19,7 +18,6 @@ export default async function RootLayout({
       <body className="relative mx-auto max-w-7xl">
         <div className="relative z-10 px-3 pt-5 md:px-4">
           <IntroSection />
-          <SelfieSection />
           <RecentlyPlayedSection />
 
           <div className="relative">

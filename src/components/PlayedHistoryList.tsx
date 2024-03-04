@@ -46,8 +46,8 @@ export const PlayedHistoryList: React.FC<PlayedHistoryListProps> = ({
           return (
             <li key={played_at}>
               <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-3">
-                  <div className="overflow-hidden">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex-shrink-0 overflow-hidden">
                     <Image
                       src={track.album.images[0].url}
                       width={48}
@@ -63,7 +63,7 @@ export const PlayedHistoryList: React.FC<PlayedHistoryListProps> = ({
                   </div>
                 </div>
                 <time
-                  className="text-right text-sm text-gray-400"
+                  className="flex-shrink-0 text-right text-sm text-gray-400"
                   dateTime={played_at}
                   title={new Date(played_at).toUTCString()}
                 >
